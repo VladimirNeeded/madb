@@ -15,7 +15,9 @@
 <body>
 
   <form action="Sign_In" method="post" >
-      You have successfully registered.
+      Login <input type="text" name="login">
+      Password <input type="password" name="password">
+      <input type="submit" name="choice" value="Sign_in"/>
   </form>
 
 </body>
