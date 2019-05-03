@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
 public class UserDao {
 
@@ -14,33 +15,34 @@ public class UserDao {
     public static void addUser(User user) {
         try {
             Statement statement = connection.createStatement();
-            String sqlAdd = "INSERT INTO `mate_academy`.`users` (`login`, `password`) " +
-                            "VALUES ('" + user.getLogin() + "', '" + user.getPassword() + "');";
+            String sqlAdd = "INSERT INTO `mate_academy`.`users` (`name`,`surname`,`login`, `password`) " +
+                            "VALUES ('" + user.getName() + "', '" + user.getSurname() +"', '"
+                                        + user.getLogin() + "', '" + user.getPassword() + "');";
             statement.execute(sqlAdd);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static String selectPassword (String login) {
+    public static Optional<String> selectPassword (String login) {
         try {
             Statement statement = connection.createStatement();
             String sqlSelect = "SELECT password FROM mate_academy.users WHERE login = '" + login + "';";
             ResultSet resultPassword = statement.executeQuery(sqlSelect);
             while (resultPassword.next()) {
-                String resPass = resultPassword.getString("password");
+                Optional<String> resPass = Optional.of(resultPassword.getString("password"));
                 return resPass;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return Optional.empty();
     }
 
-    public static void updatePassword (String newPassword, String login){
+    public static void updateValue (String whatChange, String newValue, String login){
         try {
             Statement statement = connection.createStatement();
-            String sqlUpdatePassword = "UPDATE `mate_academy`.`users` SET `password` = '" + newPassword + "' " +
+            String sqlUpdatePassword = "UPDATE `mate_academy`.`users` SET `" + whatChange +"` = '" + newValue + "' " +
                                        "WHERE `login` = '" + login + "';";
             statement.execute(sqlUpdatePassword);
         } catch (SQLException e) {

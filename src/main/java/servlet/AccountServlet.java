@@ -21,9 +21,19 @@ public class AccountServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         String choice = req.getParameter("button");
         String login = req.getParameter("login");
-        String newPassword = req.getParameter("new_password");
+        String newPassword = req.getParameter("password");
+        String newName = req.getParameter("name");
+        String newSurname = req.getParameter("surname");
+
         if (choice.equals("Change Password") && newPassword != null) {
-            UserDao.updatePassword(newPassword, login);
+            UserDao.updateValue("password", newPassword, login);
+            out.print("Password was changed");
+        }else if (choice.equals("Change name") && newName != null){
+            UserDao.updateValue("name", newName, login);
+            out.print("Name was changed");
+        }else if (choice.equals("Change surname") && newSurname != null) {
+            UserDao.updateValue("surname", newSurname, login);
+            out.print("Surname was changed");
         }else if (choice.equals("Delete account")){
             UserDao.deleteAccount(login);
             out.print("Account deleted");

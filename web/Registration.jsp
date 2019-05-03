@@ -15,6 +15,8 @@
 
 <form action="Registration" method="post" >
     Придумайте логин и пароль: <br/><br/>
+    Name <input type="text" name="name">
+    Surname <input type="text" name="surname">
     Login <input type="text" name="login">
     Password <input type="text" name="password">
     <input type="submit" value="Register"/>

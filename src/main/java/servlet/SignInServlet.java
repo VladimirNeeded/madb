@@ -24,8 +24,10 @@ public class SignInServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        User user = new User(login, password);
-        String sqlPassword = UserDao.selectPassword(user.getLogin());
+        String name = req.getParameter("name");
+        String surname = req.getParameter("surname");
+        User user = new User(name, surname, login, password);
+        String sqlPassword = UserDao.selectPassword(user.getLogin()).get();
         if (password.equals(sqlPassword)){
             req.setAttribute("login", login);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/account.jsp");
