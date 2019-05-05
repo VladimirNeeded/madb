@@ -1,37 +1,40 @@
 package servlet;
 
-import dao.DbConnector;
 import dao.UserDao;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 
-@WebServlet(value = "/account")
-public class AccountServlet extends HttpServlet {
-
-    Connection connection = DbConnector.connect();
-
+@WebServlet(value = "/editPage")
+public class editServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
+        String adminOrUser = req.getParameter("value");
         String choice = req.getParameter("button");
-        String login = req.getParameter("login");
+        String login;
+        if (adminOrUser.equals("Edit my account")){
+            login = req.getParameter("login");
+        }
+        else {
+            login = adminOrUser;
+        }
         String newPassword = req.getParameter("password");
         String newName = req.getParameter("name");
         String newSurname = req.getParameter("surname");
 
-        if (choice.equals("Change Password") && newPassword != null) {
+        if (choice.equals("Change Password") && newPassword != "") {
             UserDao.updateValue("password", newPassword, login);
             out.print("Password was changed");
-        }else if (choice.equals("Change name") && newName != null){
+        }else if (choice.equals("Change name") && newName != ""){
             UserDao.updateValue("name", newName, login);
             out.print("Name was changed");
-        }else if (choice.equals("Change surname") && newSurname != null) {
+        }else if (choice.equals("Change surname") && newSurname != "") {
             UserDao.updateValue("surname", newSurname, login);
             out.print("Surname was changed");
         }else if (choice.equals("Delete account")){

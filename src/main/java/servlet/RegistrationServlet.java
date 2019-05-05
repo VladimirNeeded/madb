@@ -24,6 +24,7 @@ public class RegistrationServlet extends HttpServlet {
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
         UserDao.addUser(new User(name, surname, login, password));
+        req.setAttribute("isRegistered", true);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/Sign_In.jsp");
         requestDispatcher.forward(req, resp);
     }
