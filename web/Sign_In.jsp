@@ -10,6 +10,11 @@
         You successfully registered!<br/><br/>
     </c:if>
 
+    <c:if test="${isLogin == false}">
+        Login or password are not valid!<br/><br/>
+    </c:if>
+
+
   <form action="account" method="post" >
       Login <input type="text" name="login">
       Password <input type="password" name="password">
