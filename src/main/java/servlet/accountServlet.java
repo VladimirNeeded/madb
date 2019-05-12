@@ -15,13 +15,6 @@ import java.util.Optional;
 
 @WebServlet(value = "/account")
 public class accountServlet extends HttpServlet {
-    enum Roles {
-        admin,
-        user
-    }
-    Roles enumRole = Roles.admin;
-
-    Connection connection = DbConnector.connect();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,7 +27,7 @@ public class accountServlet extends HttpServlet {
         String sqlPassword = UserDao.selectPassword(user.getLogin()).get();
         if (password.equals(sqlPassword)) {
             req.setAttribute("login", login);
-            if (role.isPresent() && role.get().equals(enumRole)) {
+            if (role.isPresent() && role.get().equals(Roles.admin)) {
                 req.setAttribute("list", UserDao.selectUsers().get());
                 req.getRequestDispatcher("/adminPage.jsp").forward(req, resp);
             } else {
@@ -44,5 +37,9 @@ public class accountServlet extends HttpServlet {
             req.setAttribute("isLogin", false);
             req.getRequestDispatcher("/Sign_In.jsp").forward(req, resp);
         }
+    }
+    enum Roles {
+        admin,
+        user
     }
 }
