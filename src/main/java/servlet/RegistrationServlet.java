@@ -17,10 +17,11 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
+        String email = req.getParameter("email");
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
-        UserDao.addUser(new User(name, surname, login, password));
+        UserDao.addUser(new User(name, surname, login, password, email));
         req.setAttribute("isRegistered", true);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/Sign_In.jsp");
         requestDispatcher.forward(req, resp);

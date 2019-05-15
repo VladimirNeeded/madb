@@ -6,19 +6,34 @@ public class User {
     private String surname;
     private String login;
     private String password;
+    private String email;
 
-    public User(String name, String surname, String login, String password) {
+    public User(String name, String surname, String login, String password, String email) {
         this.name = name;
         this.surname = surname;
         this.login = login;
         this.password = password;
+        this.email = email;
     }
-    public User(int id, String name, String surname, String login, String password) {
+    public User(int id, String name, String surname, String login, String password, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.login = login;
         this.password = password;
+        this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {

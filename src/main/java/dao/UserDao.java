@@ -20,9 +20,9 @@ public class UserDao {
     public static void addUser(User user) {
         try {
             Statement statement = connection.createStatement();
-            String sqlAdd = "INSERT INTO `mate_academy`.`users` (`name`,`surname`,`login`, `password`) " +
+            String sqlAdd = "INSERT INTO `mate_academy`.`users` (`name`,`surname`,`login`, `password`, `email`) " +
                             "VALUES ('" + user.getName() + "', '" + user.getSurname() +"', '"
-                                        + user.getLogin() + "', '" + user.getPassword() + "');";
+                                        + user.getLogin() + "', '" + user.getPassword() + "', '" + user.getEmail() + "');";
             statement.execute(sqlAdd);
             logger.info("User '" + user.getLogin() + "' added to DB");
         } catch (SQLException e) {
@@ -95,7 +95,8 @@ public class UserDao {
                 String surname = users.getString(3);
                 String login = users.getString(4);
                 String password = users.getString(5);
-                list.add(new User(id, name, surname, login, password));
+                String email = users.getString(6);
+                list.add(new User(id, name, surname, login, password, email));
             }
             return Optional.of(list);
         }
@@ -103,5 +104,25 @@ public class UserDao {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    public static Optional<User> getUser(String login){
+        try {
+            Statement statement = connection.createStatement();
+            String sqlSelectUser = "SELECT * FROM mate_academy.users where login = '" + login + "';";
+            ResultSet user = statement.executeQuery(sqlSelectUser);
+            if (user.next()) {
+                int id = user.getInt(1);
+                String name = user.getString(2);
+                String surname = user.getString(3);
+                String password = user.getString(5);
+                String email = user.getString(6);
+                User resUser = new User(id, name, surname, login, password, email);
+                return Optional.of(resUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+            return Optional.empty();
     }
 }

@@ -2,13 +2,13 @@ package model;
 
 import java.util.Objects;
 
-public class Product {
+public class Goods {
     private int id;
     private String name;
     private String description;
     private double price;
 
-    public Product(int id, String name, String description, double price) {
+    public Goods (int id, String name, String description, double price) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -61,11 +61,11 @@ public class Product {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return id == product.id &&
-                Double.compare(product.price, price) == 0 &&
-                Objects.equals(name, product.name) &&
-                Objects.equals(description, product.description);
+        Goods goods = (Goods) o;
+        return id == goods.id &&
+                Double.compare(goods.price, price) == 0 &&
+                Objects.equals(name, goods.name) &&
+                Objects.equals(description, goods.description);
     }
 
     @Override
