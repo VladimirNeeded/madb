@@ -8,7 +8,7 @@
 
 
 
-<form action="editPage" method="post">
+<form action="editUser" method="post">
 
     <input type="hidden" name="value" value="${value}">
     <input type="hidden" name="login" value="${login}">

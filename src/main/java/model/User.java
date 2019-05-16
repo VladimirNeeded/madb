@@ -73,7 +73,6 @@ public class User {
         return  "ID: " + id + " | " +
                 "Name: " + name + " | " +
                 "Surname: " + surname + " | " +
-                "Login: " + login + " | " +
-                "Password: " + password;
+                "Login: " + login + " | ";
     }
 }

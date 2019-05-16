@@ -34,7 +34,7 @@
                     <td><c:out value="${good.name}"/></td>
                     <td><c:out value="${good.description}"/></td>
                     <td><c:out value="${good.price}"/></td>
-                    <td><a href='buy?id=${good.id}'>Buy!</a></td>
+                    <td><a href='edit?id=${good.id}'>Edit!</a></td>
                 </tr>
         </c:forEach>
     </table>

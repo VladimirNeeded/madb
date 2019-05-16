@@ -18,27 +18,20 @@ public class adminPageServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//        PrintWriter out = resp.getWriter();
         String choice = req.getParameter("button");
-        String login = req.getParameter("login");
-//        String userLogin = req.getParameter("loginUser");
-//        String newPassword = req.getParameter("password");
-//        String newName = req.getParameter("name");
-//        String newSurname = req.getParameter("surname");
 
         try {
-            req.setAttribute("value", choice);
-            req.setAttribute("login", login);
-            req.getRequestDispatcher("editPage.jsp").forward(req, resp);
+
+            if (choice.equals("Edit")) {
+                String goodID = req.getParameter("id");
+                req.setAttribute("id", goodID);
+                req.getRequestDispatcher("editGoods.jsp").forward(req, resp);
+            }else {
+                req.setAttribute("login", choice);
+                req.getRequestDispatcher("editUsers.jsp").forward(req, resp);
+            }
         } catch (ServletException e) {
             e.printStackTrace();
         }
-
-//        try {
-//            out.print(login);
-//            req.getRequestDispatcher("editPage.jsp").forward(req, resp);
-//        } catch (ServletException e) {
-//            e.printStackTrace();
-//        }
     }
 }

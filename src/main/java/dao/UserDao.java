@@ -2,6 +2,7 @@ package dao;
 
 import model.User;
 import org.apache.log4j.Logger;
+import utils.HashUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,7 +23,7 @@ public class UserDao {
             Statement statement = connection.createStatement();
             String sqlAdd = "INSERT INTO `mate_academy`.`users` (`name`,`surname`,`login`, `password`, `email`) " +
                             "VALUES ('" + user.getName() + "', '" + user.getSurname() +"', '"
-                                        + user.getLogin() + "', '" + user.getPassword() + "', '" + user.getEmail() + "');";
+                                        + user.getLogin() + "', '" + HashUtil.getSHA512SecurePassword(user.getPassword()) + "', '" + user.getEmail() + "');";
             statement.execute(sqlAdd);
             logger.info("User '" + user.getLogin() + "' added to DB");
         } catch (SQLException e) {

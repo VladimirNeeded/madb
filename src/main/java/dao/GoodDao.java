@@ -63,4 +63,15 @@ public class GoodDao {
         }
         return allGoods;
     }
+
+    public static void updateValue (String whatChange, String newValue, String id){
+        try {
+            Statement statement = connection.createStatement();
+            String sqlUpdatePassword = "UPDATE `mate_academy`.`goods` SET `" + whatChange +"` = '" + newValue + "' " +
+                    "WHERE `id` = '" + id + "';";
+            statement.execute(sqlUpdatePassword);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

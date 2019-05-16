@@ -2,6 +2,7 @@ package servlet;
 
 import dao.UserDao;
 import model.User;
+import utils.HashUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
