@@ -1,7 +1,6 @@
 package servlet;
 
 import dao.DbConnector;
-import dao.UserDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +20,6 @@ public class adminPageServlet extends HttpServlet {
         String choice = req.getParameter("button");
 
         try {
-
             if (choice.equals("Edit")) {
                 String goodID = req.getParameter("id");
                 req.setAttribute("id", goodID);

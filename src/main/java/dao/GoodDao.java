@@ -1,36 +1,39 @@
 package dao;
 
 import model.Goods;
+import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class GoodDao {
 
+    private static final Logger logger = Logger.getLogger(GoodDao.class);
+
     private final static Connection connection = DbConnector.connect();
 
     public void addGood(Goods good) {
         try {
-            Statement statement = connection.createStatement();
-            String sqlAdd = "INSERT INTO `mate_academy`.`goods` (`name`,`description`,`price`) " +
-                    "VALUES ('" + good.getName() + "', '" + good.getDescription() +"', '"
-                    + good.getPrice() + "');";
-            statement.execute(sqlAdd);
+            String sqlAdd = "INSERT INTO `mate_academy`.`goods` (`name`,`description`,`price`) VALUES (?, ?, ?);";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
+            preparedStatement.setString(1, good.getName());
+            preparedStatement.setString(2, good.getDescription());
+            preparedStatement.setDouble(3, good.getPrice());
+            preparedStatement.execute();
+            logger.info("Product '" + good.getName() + "' added");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Cant' add product", e);
         }
     }
 
     public Optional<Goods> getGoodById (int id) {
         try {
-            Statement statement = connection.createStatement();
-            String sqlSelect = "SELECT * FROM mate_academy.goods WHERE id = '" + id + "';";
-            ResultSet resultGood = statement.executeQuery(sqlSelect);
+            String sqlSelect = "SELECT * FROM mate_academy.goods WHERE id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+            preparedStatement.setInt(1, id);
+            ResultSet resultGood = preparedStatement.executeQuery();
             while (resultGood.next()) {
                 int goodId = resultGood.getInt("id");
                 String name = resultGood.getString("name");
@@ -66,12 +69,14 @@ public class GoodDao {
 
     public static void updateValue (String whatChange, String newValue, String id){
         try {
-            Statement statement = connection.createStatement();
-            String sqlUpdatePassword = "UPDATE `mate_academy`.`goods` SET `" + whatChange +"` = '" + newValue + "' " +
-                    "WHERE `id` = '" + id + "';";
-            statement.execute(sqlUpdatePassword);
+            String sqlUpdate = "UPDATE `mate_academy`.`goods` SET `" + whatChange +"` = '" + newValue + "' " +
+                    "WHERE `id` = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
+            preparedStatement.setString(1, id);
+            preparedStatement.execute();
+            logger.info(whatChange + "was update");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Can't update values", e);
         }
     }
 }

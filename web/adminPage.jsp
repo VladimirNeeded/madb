@@ -22,14 +22,12 @@
             </tr>
 
             <c:forEach items="${goods}" var="good">
-
                 <tr>
-                    <input type="hidden" name="id" value="${good.id}">
-                    <td><c:out value="${good.id}"/></td>
+                    <td><c:out value="${good.id}"/><input type="hidden" name="id" value="${good.id}"></td>
                     <td><c:out value="${good.name}"/></td>
                     <td><c:out value="${good.description}"/></td>
                     <td><c:out value="${good.price}"/></td>
-                    <td><input type="submit" name="button"  value="Edit"/>
+                    <td> <input type="submit" name="button"  value="Edit"/></td>
                 </tr>
             </c:forEach>
         </table><br/><br/>

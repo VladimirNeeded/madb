@@ -4,10 +4,7 @@ import model.User;
 import org.apache.log4j.Logger;
 import utils.HashUtil;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,11 +17,14 @@ public class UserDao {
 
     public static void addUser(User user) {
         try {
-            Statement statement = connection.createStatement();
-            String sqlAdd = "INSERT INTO `mate_academy`.`users` (`name`,`surname`,`login`, `password`, `email`) " +
-                            "VALUES ('" + user.getName() + "', '" + user.getSurname() +"', '"
-                                        + user.getLogin() + "', '" + HashUtil.getSHA512SecurePassword(user.getPassword()) + "', '" + user.getEmail() + "');";
-            statement.execute(sqlAdd);
+            String sqlAdd = "INSERT INTO `mate_academy`.`users` (`name`,`surname`,`login`, `password`, `email`) VALUES (?,?,?,?,?);";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getLogin());
+            preparedStatement.setString(4, HashUtil.getSHA512SecurePassword(user.getPassword()));
+            preparedStatement.setString(5, user.getEmail());
+            preparedStatement.execute();
             logger.info("User '" + user.getLogin() + "' added to DB");
         } catch (SQLException e) {
             logger.error("Can't add user to DB", e);
@@ -48,12 +48,14 @@ public class UserDao {
 
     public static void updateValue (String whatChange, String newValue, String login){
         try {
-            Statement statement = connection.createStatement();
-            String sqlUpdatePassword = "UPDATE `mate_academy`.`users` SET `" + whatChange +"` = '" + newValue + "' " +
-                                       "WHERE `login` = '" + login + "';";
-            statement.execute(sqlUpdatePassword);
+            String sqlUpdate = "UPDATE `mate_academy`.`users` SET `" + whatChange +"` = '" + newValue + "' " +
+                                       "WHERE `login` = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
+            preparedStatement.setString(1, login);
+            preparedStatement.execute();
+            logger.info(whatChange + "was update");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Can't update values", e);
         }
     }
 
@@ -62,8 +64,9 @@ public class UserDao {
             Statement statement = connection.createStatement();
             String sqlDeleteAccount = "DELETE FROM `mate_academy`.`users` WHERE `login` = '"+ login + "';";
             statement.execute(sqlDeleteAccount);
+            logger.info("Account '" + login + "' deleted");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Account '" + login + "' does't delete");
         }
     }
     public static Optional<String> selectRole (String login) {

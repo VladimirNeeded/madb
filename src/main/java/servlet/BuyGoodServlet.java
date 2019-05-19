@@ -4,6 +4,7 @@ import Service.MailService;
 import dao.CodeDao;
 import model.Code;
 import model.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,21 +15,24 @@ import java.io.IOException;
 
 @WebServlet("/buy")
 public class BuyGoodServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(BuyGoodServlet.class);
     MailService mailService = new MailService();
     CodeDao codeDao = new CodeDao();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer goodId = Integer.valueOf(req.getParameter("good_id"));
+        int goodId = Integer.parseInt(req.getParameter("goodId"));
         String codeValue = req.getParameter("code");
         User user = (User) req.getSession().getAttribute("user");
         Code code = new Code(codeValue, user.getId(), goodId);
         if (codeDao.checkCode(code)){
             req.setAttribute("isPay", true);
-            req.getRequestDispatcher("/marketPlace.jsp").forward(req, resp);
+            req.getRequestDispatcher("/afterBuy.jsp").forward(req, resp);
+            logger.info("Payment was successful");
         }else {
             req.setAttribute("isNotPay", true);
-            req.getRequestDispatcher("/marketPlace.jsp").forward(req, resp);
+            req.getRequestDispatcher("/afterBuy.jsp").forward(req, resp);
+            logger.info("Payment failed");
         }
     }
 
@@ -37,8 +41,12 @@ public class BuyGoodServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
         Integer buyId = Integer.parseInt(req.getParameter("id"));
         String codeValue = mailService.sendMail(user.getEmail());
-        Code code = new Code(codeValue, user.getId(), buyId);
-        req.setAttribute("good_id", buyId);
+        logger.info("Code was send to the email: " + user.getEmail());
+        Code codeOnMail = new Code(codeValue, user.getId(), buyId);
+        codeDao.addCode(codeOnMail);
+        req.setAttribute("userId", user.getId());
+        req.setAttribute("goodId", buyId);
+        req.setAttribute("valueMailCode", codeValue);
         req.getRequestDispatcher("writeBuyCode.jsp").forward(req, resp);
     }
 }

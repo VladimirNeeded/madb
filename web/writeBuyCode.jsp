@@ -11,7 +11,10 @@
 
     <form action="/buy" method="post">
 
-        <input type="hidden" name="good_id"  value="${good_id}">
+        <input type="hidden" name="userId"  value="${userId}">
+        <input type="hidden" name="goodId"  value="${goodId}">
+        <input type="hidden" name="codeOnMail"  value="${valueMailCode}">
+
         <input type="password" title="code" name="code">
         <input type="submit">
 

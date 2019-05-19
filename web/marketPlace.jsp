@@ -9,14 +9,6 @@
 
     <H1> Hello, ${login} </H1> <br/>
 
-    <c:if test="${isPay == true}">
-        payment was successful!<br/><br/>
-    </c:if>
-
-    <c:if test="${isNotPay == true}">
-        payment failed!<br/><br/>
-    </c:if>
-
         <table border='2' width='80%'>
 
             <tr>
@@ -34,7 +26,7 @@
                     <td><c:out value="${good.name}"/></td>
                     <td><c:out value="${good.description}"/></td>
                     <td><c:out value="${good.price}"/></td>
-                    <td><a href='edit?id=${good.id}'>Edit!</a></td>
+                    <td><a href='buy?id=${good.id}'>Buy!</a></td>
                 </tr>
         </c:forEach>
     </table>
