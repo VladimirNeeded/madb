@@ -3,14 +3,19 @@ package dao;
 import model.Goods;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class GoodDao {
 
-    private static final Logger logger = Logger.getLogger(GoodDao.class);
+    private static final Logger LOGGER = Logger.getLogger(GoodDao.class);
 
     private final static Connection connection = DbConnector.connect();
 
@@ -22,9 +27,9 @@ public class GoodDao {
             preparedStatement.setString(2, good.getDescription());
             preparedStatement.setDouble(3, good.getPrice());
             preparedStatement.execute();
-            logger.info("Product '" + good.getName() + "' added");
+            LOGGER.info("Product '" + good.getName() + "' added");
         } catch (SQLException e) {
-            logger.error("Cant' add product", e);
+            LOGGER.error("Cant' add product", e);
         }
     }
 
@@ -74,9 +79,9 @@ public class GoodDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
             preparedStatement.setString(1, id);
             preparedStatement.execute();
-            logger.info(whatChange + "was update");
+            LOGGER.info(whatChange + "was update");
         } catch (SQLException e) {
-            logger.error("Can't update values", e);
+            LOGGER.error("Can't update values", e);
         }
     }
 }

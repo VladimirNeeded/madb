@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet(value = "/editUser")
 public class editUsersServlet extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(editUsersServlet.class);
+    private static final Logger LOGGER = Logger.getLogger(editUsersServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,22 +28,22 @@ public class editUsersServlet extends HttpServlet {
             UserDao.updateValue("password", newPassword, login);
             req.setAttribute("changePassword", true);
             req.getRequestDispatcher("/editUsers.jsp").forward(req, resp);
-            logger.info(login + "'s password changed");
+            LOGGER.info(login + "'s password changed");
         } else if (choice.equals("Change name") && newName != ""){
             UserDao.updateValue("name", newName, login);
             req.setAttribute("changeName", true);
             req.getRequestDispatcher("/editUsers.jsp").forward(req, resp);
-            logger.info(login + "'s name changed");
+            LOGGER.info(login + "'s name changed");
         } else if (choice.equals("Change surname") && newSurname != "") {
             UserDao.updateValue("surname", newSurname, login);
             req.setAttribute("changeSurname", true);
             req.getRequestDispatcher("/editUsers.jsp").forward(req, resp);
-            logger.info(login + "'s surname changed");
+            LOGGER.info(login + "'s surname changed");
         } else if (choice.equals("Delete account")){
             UserDao.deleteAccount(login);
             req.setAttribute("deleteAccount", true);
             req.getRequestDispatcher("/editUsers.jsp").forward(req, resp);
-            logger.info("Account '" + login + "' deleted");
+            LOGGER.info("Account '" + login + "' deleted");
         }
     }
 }

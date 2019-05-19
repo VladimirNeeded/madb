@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @WebServlet(value = "/Registration")
 public class RegistrationServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(RegistrationServlet.class);
+    private static final Logger LOGGER = Logger.getLogger(RegistrationServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,7 +26,7 @@ public class RegistrationServlet extends HttpServlet {
         String surname = req.getParameter("surname");
         UserDao.addUser(new User(name, surname, login, password, email));
         req.setAttribute("isRegistered", true);
-        logger.info("Registration was successfully");
+        LOGGER.info("Registration was successfully");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/Sign_In.jsp");
         requestDispatcher.forward(req, resp);
     }

@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @WebServlet("/buy")
 public class BuyGoodServlet extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(BuyGoodServlet.class);
+    private static final Logger LOGGER = Logger.getLogger(BuyGoodServlet.class);
     MailService mailService = new MailService();
     CodeDao codeDao = new CodeDao();
 
@@ -28,11 +28,11 @@ public class BuyGoodServlet extends HttpServlet {
         if (codeDao.checkCode(code)){
             req.setAttribute("isPay", true);
             req.getRequestDispatcher("/afterBuy.jsp").forward(req, resp);
-            logger.info("Payment was successful");
+            LOGGER.info("Payment was successful");
         }else {
             req.setAttribute("isNotPay", true);
             req.getRequestDispatcher("/afterBuy.jsp").forward(req, resp);
-            logger.info("Payment failed");
+            LOGGER.info("Payment failed");
         }
     }
 
@@ -41,7 +41,7 @@ public class BuyGoodServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
         Integer buyId = Integer.parseInt(req.getParameter("id"));
         String codeValue = mailService.sendMail(user.getEmail());
-        logger.info("Code was send to the email: " + user.getEmail());
+        LOGGER.info("Code was send to the email: " + user.getEmail());
         Code codeOnMail = new Code(codeValue, user.getId(), buyId);
         codeDao.addCode(codeOnMail);
         req.setAttribute("userId", user.getId());

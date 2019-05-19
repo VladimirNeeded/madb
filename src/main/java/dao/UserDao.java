@@ -4,14 +4,18 @@ import model.User;
 import org.apache.log4j.Logger;
 import utils.HashUtil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class UserDao {
 
-    private static final Logger logger = Logger.getLogger(UserDao.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDao.class);
 
     private final static Connection connection = DbConnector.connect();
 
@@ -25,9 +29,9 @@ public class UserDao {
             preparedStatement.setString(4, HashUtil.getSHA512SecurePassword(user.getPassword()));
             preparedStatement.setString(5, user.getEmail());
             preparedStatement.execute();
-            logger.info("User '" + user.getLogin() + "' added to DB");
+            LOGGER.info("User '" + user.getLogin() + "' added to DB");
         } catch (SQLException e) {
-            logger.error("Can't add user to DB", e);
+            LOGGER.error("Can't add user to DB", e);
         }
     }
 
@@ -41,7 +45,7 @@ public class UserDao {
                 return resPass;
             }
         } catch (SQLException e) {
-            logger.error("Can't get user's password", e);
+            LOGGER.error("Can't get user's password", e);
         }
         return Optional.empty();
     }
@@ -53,9 +57,9 @@ public class UserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
             preparedStatement.setString(1, login);
             preparedStatement.execute();
-            logger.info(whatChange + "was update");
+            LOGGER.info(whatChange + "was update");
         } catch (SQLException e) {
-            logger.error("Can't update values", e);
+            LOGGER.error("Can't update values", e);
         }
     }
 
@@ -64,9 +68,9 @@ public class UserDao {
             Statement statement = connection.createStatement();
             String sqlDeleteAccount = "DELETE FROM `mate_academy`.`users` WHERE `login` = '"+ login + "';";
             statement.execute(sqlDeleteAccount);
-            logger.info("Account '" + login + "' deleted");
+            LOGGER.info("Account '" + login + "' deleted");
         } catch (SQLException e) {
-            logger.error("Account '" + login + "' does't delete");
+            LOGGER.error("Account '" + login + "' does't delete");
         }
     }
     public static Optional<String> selectRole (String login) {
