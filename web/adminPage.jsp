@@ -47,7 +47,7 @@
                 <th>EDIT!</th>
             </tr>
 
-            <c:forEach var="user" items="${list}">
+            <c:forEach var="user" items="${users}">
                 <tr>
                     <td><c:out value="${user.id}"/></td>
                     <td><c:out value="${user.login}"/></td>

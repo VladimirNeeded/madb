@@ -1,7 +1,11 @@
 package servlet;
 
 import dao.UserDao;
+import dao.UserDaoHibImpl;
+import dao.UserDaoSQL;
+import model.User;
 import org.apache.log4j.Logger;
+import utils.HashUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,33 +18,38 @@ import java.io.IOException;
 public class editUsersServlet extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(editUsersServlet.class);
+    private static UserDao userDao = new UserDaoHibImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String choice = req.getParameter("button");
+        User user = userDao.getUser(login).get();
 
-        String newPassword = req.getParameter("password");
+        String newPassword = HashUtil.getSHA512SecurePassword(req.getParameter("password"));
         String newName = req.getParameter("name");
         String newSurname = req.getParameter("surname");
 
         if (choice.equals("Change Password") && newPassword != "") {
-            UserDao.updateValue("password", newPassword, login);
+            User newUser = new User(user.getId(), user.getName(), user.getSurname(), user.getLogin(), newPassword, user.getEmail(), user.getRole());
+            userDao.updateValue(newUser);
             req.setAttribute("changePassword", true);
             req.getRequestDispatcher("/editUsers.jsp").forward(req, resp);
             LOGGER.info(login + "'s password changed");
         } else if (choice.equals("Change name") && newName != ""){
-            UserDao.updateValue("name", newName, login);
+            User newUser = new User(user.getId(), newName, user.getSurname(), user.getLogin(), user.getPassword(), user.getEmail(), user.getRole());
+            userDao.updateValue(newUser);
             req.setAttribute("changeName", true);
             req.getRequestDispatcher("/editUsers.jsp").forward(req, resp);
             LOGGER.info(login + "'s name changed");
         } else if (choice.equals("Change surname") && newSurname != "") {
-            UserDao.updateValue("surname", newSurname, login);
+            User newUser = new User(user.getId(), user.getName(), newSurname, user.getLogin(), user.getPassword(), user.getEmail(), user.getRole());
+            userDao.updateValue(newUser);
             req.setAttribute("changeSurname", true);
             req.getRequestDispatcher("/editUsers.jsp").forward(req, resp);
             LOGGER.info(login + "'s surname changed");
         } else if (choice.equals("Delete account")){
-            UserDao.deleteAccount(login);
+            userDao.deleteAccount(user);
             req.setAttribute("deleteAccount", true);
             req.getRequestDispatcher("/editUsers.jsp").forward(req, resp);
             LOGGER.info("Account '" + login + "' deleted");

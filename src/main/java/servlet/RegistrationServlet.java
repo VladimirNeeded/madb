@@ -1,9 +1,10 @@
 package servlet;
 
 import dao.UserDao;
+import dao.UserDaoHibImpl;
+import dao.UserDaoSQL;
 import model.User;
 import org.apache.log4j.Logger;
-import utils.HashUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 @WebServlet(value = "/Registration")
 public class RegistrationServlet extends HttpServlet {
+    private static final UserDao userDao = new UserDaoHibImpl();
     private static final Logger LOGGER = Logger.getLogger(RegistrationServlet.class);
 
     @Override
@@ -24,7 +26,8 @@ public class RegistrationServlet extends HttpServlet {
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
-        UserDao.addUser(new User(name, surname, login, password, email));
+        String role = "user";
+        userDao.addUser(new User(name, surname, login, password, email, role));
         req.setAttribute("isRegistered", true);
         LOGGER.info("Registration was successfully");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/Sign_In.jsp");

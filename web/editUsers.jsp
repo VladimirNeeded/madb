@@ -18,7 +18,6 @@
     <c:if test="${changeName == true}">
         Name was changed!<br/><br/>
     </c:if>
-
     Change Surname: <br/>
     <input type="text" name="surname">
     <input type="submit" name="button" value="Change surname"/> <br/>
