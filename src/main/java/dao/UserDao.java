@@ -17,12 +17,12 @@ public class UserDao {
 
     private static final Logger LOGGER = Logger.getLogger(UserDao.class);
 
-    private final static Connection connection = DbConnector.connect();
+    private final static Connection CONNECTION = DbConnector.connect();
 
     public static void addUser(User user) {
         try {
             String sqlAdd = "INSERT INTO `mate_academy`.`users` (`name`,`surname`,`login`, `password`, `email`) VALUES (?,?,?,?,?);";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
+            PreparedStatement preparedStatement = CONNECTION.prepareStatement(sqlAdd);
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getLogin());
@@ -37,7 +37,7 @@ public class UserDao {
 
     public static Optional<String> selectPassword (String login) {
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = CONNECTION.createStatement();
             String sqlSelect = "SELECT password FROM mate_academy.users WHERE login = '" + login + "';";
             ResultSet resultPassword = statement.executeQuery(sqlSelect);
             while (resultPassword.next()) {
@@ -54,7 +54,7 @@ public class UserDao {
         try {
             String sqlUpdate = "UPDATE `mate_academy`.`users` SET `" + whatChange +"` = '" + newValue + "' " +
                                        "WHERE `login` = ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
+            PreparedStatement preparedStatement = CONNECTION.prepareStatement(sqlUpdate);
             preparedStatement.setString(1, login);
             preparedStatement.execute();
             LOGGER.info(whatChange + "was update");
@@ -65,7 +65,7 @@ public class UserDao {
 
     public static void deleteAccount (String login){
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = CONNECTION.createStatement();
             String sqlDeleteAccount = "DELETE FROM `mate_academy`.`users` WHERE `login` = '"+ login + "';";
             statement.execute(sqlDeleteAccount);
             LOGGER.info("Account '" + login + "' deleted");
@@ -75,7 +75,7 @@ public class UserDao {
     }
     public static Optional<String> selectRole (String login) {
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = CONNECTION.createStatement();
             String sqlSelect = "SELECT roles.name " +
             "FROM users " +
             "INNER JOIN roles " +
@@ -94,7 +94,7 @@ public class UserDao {
     public static Optional<List<User>> selectUsers() {
         try {
             List<User> list = new ArrayList<>();
-            Statement statement = connection.createStatement();
+            Statement statement = CONNECTION.createStatement();
             String sqlSelectUsers = "SELECT * FROM mate_academy.users;";
             ResultSet users = statement.executeQuery(sqlSelectUsers);
             while (users.next()) {
@@ -116,7 +116,7 @@ public class UserDao {
 
     public static Optional<User> getUser(String login){
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = CONNECTION.createStatement();
             String sqlSelectUser = "SELECT * FROM mate_academy.users where login = '" + login + "';";
             ResultSet user = statement.executeQuery(sqlSelectUser);
             if (user.next()) {

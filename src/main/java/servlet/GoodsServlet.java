@@ -13,7 +13,7 @@ import java.util.List;
 
 @WebServlet (value = "/goods")
 public class GoodsServlet extends HttpServlet {
-    private static final GoodDao goodDao = new GoodDao();
+    private static GoodDao goodDao = new GoodDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

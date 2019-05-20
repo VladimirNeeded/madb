@@ -17,12 +17,12 @@ public class GoodDao {
 
     private static final Logger LOGGER = Logger.getLogger(GoodDao.class);
 
-    private final static Connection connection = DbConnector.connect();
+    private final static Connection CONNECTION = DbConnector.connect();
 
     public void addGood(Goods good) {
         try {
             String sqlAdd = "INSERT INTO `mate_academy`.`goods` (`name`,`description`,`price`) VALUES (?, ?, ?);";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
+            PreparedStatement preparedStatement = CONNECTION.prepareStatement(sqlAdd);
             preparedStatement.setString(1, good.getName());
             preparedStatement.setString(2, good.getDescription());
             preparedStatement.setDouble(3, good.getPrice());
@@ -36,7 +36,7 @@ public class GoodDao {
     public Optional<Goods> getGoodById (int id) {
         try {
             String sqlSelect = "SELECT * FROM mate_academy.goods WHERE id = ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+            PreparedStatement preparedStatement = CONNECTION.prepareStatement(sqlSelect);
             preparedStatement.setInt(1, id);
             ResultSet resultGood = preparedStatement.executeQuery();
             while (resultGood.next()) {
@@ -56,7 +56,7 @@ public class GoodDao {
     public List<Goods> getAllGoods () {
         List<Goods> allGoods = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = CONNECTION.createStatement();
             String sqlSelect = "SELECT * FROM mate_academy.goods";
             ResultSet resultGood = statement.executeQuery(sqlSelect);
             while (resultGood.next()) {
@@ -76,7 +76,7 @@ public class GoodDao {
         try {
             String sqlUpdate = "UPDATE `mate_academy`.`goods` SET `" + whatChange +"` = '" + newValue + "' " +
                     "WHERE `id` = ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
+            PreparedStatement preparedStatement = CONNECTION.prepareStatement(sqlUpdate);
             preparedStatement.setString(1, id);
             preparedStatement.execute();
             LOGGER.info(whatChange + "was update");

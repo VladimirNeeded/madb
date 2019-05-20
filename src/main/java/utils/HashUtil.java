@@ -6,13 +6,13 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashUtil {
 
-    private final static String salt = "okorok69";
+    private final static String SALT = "okorok69";
 
     public static String getSHA512SecurePassword(String passwordToHash){
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(salt.getBytes(StandardCharsets.UTF_8));
+            md.update(SALT.getBytes(StandardCharsets.UTF_8));
             byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
             for(int i = 0; i < bytes.length; i++){

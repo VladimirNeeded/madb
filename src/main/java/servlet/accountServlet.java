@@ -19,7 +19,7 @@ import java.util.Optional;
 @WebServlet(value = "/account")
 public class accountServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(accountServlet.class);
-    private static final GoodDao goodDao = new GoodDao();
+    private static GoodDao goodDao = new GoodDao();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
