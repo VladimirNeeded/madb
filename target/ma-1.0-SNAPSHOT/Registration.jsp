@@ -18,7 +18,6 @@
     Name <input type="text" name="name">
     Surname <input type="text" name="surname">
     Login <input type="text" name="login">
-    Email <input type="text" name="email">
     Password <input type="text" name="password">
     <input type="submit" value="Register"/>
 </form>

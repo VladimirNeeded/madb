@@ -7,9 +7,15 @@
   </head>
 
   <body>
+
+    <form action="Sign_In.jsp" method="post" >
+       <input type="submit" value="Войти"/>
+    </form>
+
     <form action="Registration.jsp" method="post" accept-charset="UTF-8">
         <input type="submit" value="Зарегистрироваться"/>
     </form>
+
   </body>
 
 </html>
