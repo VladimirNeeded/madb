@@ -3,7 +3,6 @@ package dao;
 import model.Goods;
 import org.apache.log4j.Logger;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class GoodDaoSQL implements GoodDao{
+public class GoodDaoSql implements GoodDao{
 
-    private static final Logger LOGGER = Logger.getLogger(GoodDaoSQL.class);
+    private static final Logger LOGGER = Logger.getLogger(GoodDaoSql.class);
 
     private final static Connection connection = DbConnector.connect();
 
@@ -45,10 +44,11 @@ public class GoodDaoSQL implements GoodDao{
                 String description = resultGood.getString("description");
                 double price = resultGood.getDouble("price");
                 Optional<Goods> resGood = Optional.of(new Goods(goodId, name, description, price));
+                LOGGER.info("Good with id = " + id + " was gotten");
                 return resGood;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Good with id = " + id + " was't gotten", e);
         }
         return Optional.empty();
     }
@@ -67,8 +67,9 @@ public class GoodDaoSQL implements GoodDao{
                 allGoods.add(new Goods(goodId, name, description, price));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.info("List of goods was't gotten", e);
         }
+        LOGGER.info("List of goods was gotten");
         return allGoods;
     }
 

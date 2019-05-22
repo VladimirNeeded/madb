@@ -6,9 +6,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "users")
+@Table (name = "users", schema = "mate_academy")
 public class User {
 
+    @Id
     @Column(name = "id")
     private int id;
 
@@ -18,7 +19,6 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @Id
     @Column(name = "login")
     private String login;
 

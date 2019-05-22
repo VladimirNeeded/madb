@@ -2,7 +2,7 @@ package servlet;
 
 import dao.UserDao;
 import dao.UserDaoHibImpl;
-import dao.UserDaoSQL;
+import dao.UserDaoSql;
 import model.User;
 import org.apache.log4j.Logger;
 import utils.HashUtil;
@@ -24,7 +24,7 @@ public class editUsersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String choice = req.getParameter("button");
-        User user = userDao.getUser(login).get();
+        User user = userDao.getUser(UserDaoSql.getId(login)).get();
 
         String newPassword = HashUtil.getSHA512SecurePassword(req.getParameter("password"));
         String newName = req.getParameter("name");

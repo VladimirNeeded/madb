@@ -1,6 +1,6 @@
 package servlet;
 
-import dao.GoodDaoSQL;
+import dao.GoodDaoSql;
 import model.Goods;
 
 import javax.servlet.ServletException;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @WebServlet (value = "/goods")
 public class GoodsServlet extends HttpServlet {
-    private static final GoodDaoSQL goodDao = new GoodDaoSQL();
+    private static final GoodDaoSql goodDao = new GoodDaoSql();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

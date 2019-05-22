@@ -8,11 +8,11 @@
 
   <body>
 
-    <form action="Sign_In.jsp" method="post" >
+    <form action="SignIn" method="get" >
        <input type="submit" value="Войти"/>
     </form>
 
-    <form action="Registration.jsp" method="post" accept-charset="UTF-8">
+    <form action="Registration" method="get" accept-charset="UTF-8">
         <input type="submit" value="Зарегистрироваться"/>
     </form>
 

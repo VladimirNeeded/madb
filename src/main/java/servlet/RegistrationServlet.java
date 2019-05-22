@@ -2,7 +2,6 @@ package servlet;
 
 import dao.UserDao;
 import dao.UserDaoHibImpl;
-import dao.UserDaoSQL;
 import model.User;
 import org.apache.log4j.Logger;
 
@@ -18,6 +17,11 @@ import java.io.IOException;
 public class RegistrationServlet extends HttpServlet {
     private static final UserDao userDao = new UserDaoHibImpl();
     private static final Logger LOGGER = Logger.getLogger(RegistrationServlet.class);
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("Registration.jsp").forward(req, resp);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

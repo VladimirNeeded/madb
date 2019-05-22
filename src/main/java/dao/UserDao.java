@@ -13,7 +13,7 @@ public interface UserDao {
 
     public void deleteAccount (User user);
 
-    public Optional<User> getUser(String login);
+    public Optional<User> getUser(int id);
 
     public Optional<List<User>> getAllUsers();
 }

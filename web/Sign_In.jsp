@@ -15,7 +15,7 @@
     </c:if>
 
 
-  <form action="account" method="post" >
+  <form action="SignIn" method="post" >
       Login <input type="text" name="login">
       Password <input type="password" name="password">
       <input type="submit" name="choice" value="Sign_in"/>

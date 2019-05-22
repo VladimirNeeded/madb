@@ -3,6 +3,7 @@ package model;
 import java.util.Objects;
 
 public class Goods {
+
     private int id;
     private String name;
     private String description;

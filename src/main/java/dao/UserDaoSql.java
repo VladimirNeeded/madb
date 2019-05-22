@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDaoSQL implements UserDao{
+public class UserDaoSql implements UserDao{
 
-    private static final Logger LOGGER = Logger.getLogger(UserDaoSQL.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDaoSql.class);
 
     private final static Connection connection = DbConnector.connect();
 
@@ -79,7 +79,21 @@ public class UserDaoSQL implements UserDao{
         }
     }
 
-    public static Optional<String> selectRole (String login) {
+    public static int getId(String login) {
+        try {
+            String sqlGetId = "SELECT id FROM mate_academy.users where login = '" + login + "';";
+            Statement statement = connection.createStatement();
+            ResultSet resId = statement.executeQuery(sqlGetId);
+            if (resId.next()) {
+                return resId.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+        public static Optional<String> selectRole (String login) {
         try {
             Statement statement = connection.createStatement();
             String sqlSelect = "SELECT roles.name " +
@@ -93,7 +107,7 @@ public class UserDaoSQL implements UserDao{
                 return role;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can't get user's role", e);;
         }
         return Optional.empty();
     }
@@ -114,33 +128,35 @@ public class UserDaoSQL implements UserDao{
                 String email = users.getString(6);
                 String role = users.getString(7);
                 list.add(new User(id, name, surname, login, password, email, role));
+                LOGGER.info("List with users was gotten");
             }
             return Optional.of(list);
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can't get all users", e);
         }
         return Optional.empty();
     }
 
     @Override
-    public Optional<User> getUser(String login){
+    public Optional<User> getUser(int id){
         try {
             Statement statement = connection.createStatement();
-            String sqlSelectUser = "SELECT * FROM mate_academy.users where login = '" + login + "';";
+            String sqlSelectUser = "SELECT * FROM mate_academy.users where id = '" + id + "';";
             ResultSet user = statement.executeQuery(sqlSelectUser);
             if (user.next()) {
-                int id = user.getInt(1);
                 String name = user.getString(2);
                 String surname = user.getString(3);
+                String login = user.getString(4);
                 String password = user.getString(5);
                 String email = user.getString(6);
                 String role = user.getString(7);
                 User resUser = new User(id, name, surname, login, password, email, role);
+                LOGGER.info("user was gotten");
                 return Optional.of(resUser);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can't get user", e);
         }
             return Optional.empty();
     }

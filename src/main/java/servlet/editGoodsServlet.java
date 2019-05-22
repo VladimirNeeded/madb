@@ -1,7 +1,7 @@
 package servlet;
 
 import dao.GoodDao;
-import dao.GoodDaoSQL;
+import dao.GoodDaoSql;
 import model.Goods;
 import org.apache.log4j.Logger;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet(value = "/editGood")
 public class editGoodsServlet extends HttpServlet {
-    private static GoodDao goodDao = new GoodDaoSQL();
+    private static GoodDao goodDao = new GoodDaoSql();
     private static final Logger LOGGER = Logger.getLogger(editGoodsServlet.class);
 
     @Override
