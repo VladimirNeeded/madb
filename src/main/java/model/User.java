@@ -1,9 +1,6 @@
 package model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table (name = "users", schema = "mate_academy")
@@ -28,13 +25,22 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "role")
-    private String role;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public User(){
     }
 
-    public User(String name, String surname, String login, String password, String email, String role) {
+    public User(String name, String surname, String login, String password, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(String name, String surname, String login, String password, String email, Role role) {
         this.name = name;
         this.surname = surname;
         this.login = login;
@@ -42,7 +48,8 @@ public class User {
         this.email = email;
         this.role = role;
     }
-    public User(int id, String name, String surname, String login, String password, String email, String role) {
+
+    public User(int id, String name, String surname, String login, String password, String email, Role role) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -96,11 +103,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

@@ -2,6 +2,7 @@ package dao;
 
 import model.Goods;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import utils.HibernateSessionFactoryUtil;
@@ -14,14 +15,19 @@ public class GoodDaoHibImpl implements GoodDao {
 
     @Override
     public void addGood(Goods good) {
-        Session session = HibernateSessionFactoryUtil
+        try (Session session = HibernateSessionFactoryUtil
                 .getSessionFactory()
-                .openSession();
-        session.beginTransaction();
-        session.save(good);
-        session.getTransaction().commit();
-        session.close();
-        LOGGER.info("Good was added");
+                .openSession();){
+            session.beginTransaction();
+            session.save(good);
+            session.getTransaction().commit();
+            session.close();
+            LOGGER.info("Good was added");
+
+        } catch (HibernateException e) {
+            LOGGER.error("Good was't added", e);
+        }
+
     }
 
     @Override

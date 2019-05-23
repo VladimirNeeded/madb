@@ -1,6 +1,7 @@
 package utils;
 
 import dao.UserDaoSql;
+import model.Role;
 import model.User;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -24,6 +25,7 @@ public class HibernateSessionFactoryUtil {
             try {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(Role.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
 

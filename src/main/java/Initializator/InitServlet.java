@@ -1,7 +1,9 @@
 package Initializator;
 
+import dao.RoleHibImpl;
 import dao.UserDao;
 import dao.UserDaoHibImpl;
+import model.Role;
 import model.User;
 
 import javax.servlet.ServletConfig;
@@ -18,7 +20,16 @@ public class InitServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         UserDao userDao = new UserDaoHibImpl();
-        User user = new User(0,"Vladimir", "Tretyak", "VladmirTRE", "123", "voha.tretyak@gmail.com", "admin");
+        RoleHibImpl roleDao = new RoleHibImpl();
+
+        Role roleAdmin = new Role("admin");
+        Role roleUser = new Role("user");
+        roleDao.addRole(roleAdmin);
+        roleDao.addRole(roleUser);
+
+        User user = new User(0,"Vladimir", "Tretyak", "VladmirTRE", "123", "voha.tretyak@gmail.com", roleAdmin);
         userDao.addUser(user);
+
+
     }
 }

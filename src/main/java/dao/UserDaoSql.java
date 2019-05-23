@@ -85,10 +85,11 @@ public class UserDaoSql implements UserDao{
             Statement statement = connection.createStatement();
             ResultSet resId = statement.executeQuery(sqlGetId);
             if (resId.next()) {
+                LOGGER.info("Id of user was gotten");
                 return resId.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Id can't be gotten");
         }
         return -1;
     }
@@ -127,7 +128,7 @@ public class UserDaoSql implements UserDao{
                 String password = users.getString(5);
                 String email = users.getString(6);
                 String role = users.getString(7);
-                list.add(new User(id, name, surname, login, password, email, role));
+                list.add(new User(name, surname, login, password, email));
                 LOGGER.info("List with users was gotten");
             }
             return Optional.of(list);
@@ -150,8 +151,7 @@ public class UserDaoSql implements UserDao{
                 String login = user.getString(4);
                 String password = user.getString(5);
                 String email = user.getString(6);
-                String role = user.getString(7);
-                User resUser = new User(id, name, surname, login, password, email, role);
+                User resUser = new User(name, surname, login, password, email);
                 LOGGER.info("user was gotten");
                 return Optional.of(resUser);
             }

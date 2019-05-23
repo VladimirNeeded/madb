@@ -1,7 +1,9 @@
 package servlet;
 
+import dao.RoleHibImpl;
 import dao.UserDao;
 import dao.UserDaoHibImpl;
+import model.Role;
 import model.User;
 import org.apache.log4j.Logger;
 
@@ -16,6 +18,7 @@ import java.io.IOException;
 @WebServlet(value = "/Registration")
 public class RegistrationServlet extends HttpServlet {
     private static final UserDao userDao = new UserDaoHibImpl();
+    private static final RoleHibImpl roleDao = new RoleHibImpl();
     private static final Logger LOGGER = Logger.getLogger(RegistrationServlet.class);
 
     @Override
@@ -30,7 +33,7 @@ public class RegistrationServlet extends HttpServlet {
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
-        String role = "user";
+        Role role = roleDao.findRole(new User(name, surname, login, password, email));
         userDao.addUser(new User(name, surname, login, password, email, role));
         req.setAttribute("isRegistered", true);
         LOGGER.info("Registration was successfully");
