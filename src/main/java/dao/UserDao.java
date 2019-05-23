@@ -2,22 +2,18 @@ package dao;
 
 import model.User;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
+import java.util.Optional;
 
+public interface UserDao {
 
-public class UserDao {
+    public void addUser(User user);
 
-    public void addUser(User user) {
-        Connection connection = DbConnector.connect();
-        try {
-            Statement statement = connection.createStatement();
-            String sqlAdd = "INSERT INTO `mate_academy`.`users` (`login`, `password`) VALUES ('" + user.getLogin() + "', '" + user.getPassword() + "');";
-            System.out.println(sqlAdd);
-            statement.execute(sqlAdd);
-        } catch (SQLException e) {
-            System.out.println("SQLException//////////////////////////////////");
-        }
-    }
+    public void updateValue (User user);
+
+    public void deleteAccount (User user);
+
+    public Optional<User> getUser(int id);
+
+    public Optional<List<User>> getAllUsers();
 }
